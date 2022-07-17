@@ -17,6 +17,20 @@ mongoose.connection.on('error',(err)=>{
     console.log("err connecting",err)
 })
 
+const path = require("path");
+
+// Step 1:
+if(process.env.NODE_ENV=="production"){
+app.use(express.static(path.resolve(__dirname, "./client/build")));
+// app.use('/storage', express.static(__dirname + '/storage'));
+
+// Step 2:
+app.get("*", function (request, response) {
+  response.sendFile(path.resolve(__dirname, "./client/build", "index.html"));
+});
+
+}
+
 require('./models/user')
 require('./models/post')
 
